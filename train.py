@@ -16,6 +16,7 @@ from utils.seed import init_seeds
 os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 
 init_seeds(0)
+
 model = SVHN_Model1()
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), 0.001)
@@ -25,12 +26,11 @@ use_cuda = True
 if use_cuda:
     model = model.cuda()
 
-for epoch in range(50):
+for epoch in range(17):
     start = time.time()
     print('start', time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(start)))
     train_loss = train(train_loader, model, criterion, optimizer, epoch)
     val_loss = validate(val_loader, model, criterion)
-
     val_label = [''.join(map(str, x)) for x in val_loader.dataset.img_label]
     val_predict_label = predict(val_loader, model, 1)
     val_predict_label = np.vstack([

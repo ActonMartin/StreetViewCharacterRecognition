@@ -10,6 +10,8 @@ from utils.seed import init_seeds
 os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 
 init_seeds(0)
+
+
 class SVHN_Model1(nn.Module):
     def __init__(self):
         super(SVHN_Model1, self).__init__()
@@ -50,10 +52,10 @@ def train(train_loader, model, criterion, optimizer, epoch, use_cuda=True):
 
         c0, c1, c2, c3, c4 = model(input)
         loss = criterion(c0, target[:, 0]) + \
-            0.8 * criterion(c1, target[:, 1]) + \
-            0.6 * criterion(c2, target[:, 2]) + \
-            0.5 * criterion(c3, target[:, 3]) + \
-            0.3 * criterion(c4, target[:, 4])
+            criterion(c1, target[:, 1]) + \
+            criterion(c2, target[:, 2]) + \
+            criterion(c3, target[:, 3]) + \
+            criterion(c4, target[:, 4])
 
         # loss /= 6
         optimizer.zero_grad()
@@ -79,10 +81,10 @@ def validate(val_loader, model, criterion, use_cuda=True):
 
             c0, c1, c2, c3, c4 = model(input)
             loss = criterion(c0, target[:, 0]) + \
-                0.8 * criterion(c1, target[:, 1]) + \
-                0.6 * criterion(c2, target[:, 2]) + \
-                0.5 * criterion(c3, target[:, 3]) + \
-                0.3 * criterion(c4, target[:, 4])
+                criterion(c1, target[:, 1]) + \
+                criterion(c2, target[:, 2]) + \
+                criterion(c3, target[:, 3]) + \
+                criterion(c4, target[:, 4])
             # loss /= 6
             val_loss.append(loss.item())
     return np.mean(val_loss)
